@@ -1,11 +1,12 @@
 <?php
 // Custom post type for pro-tips.
 
-if ( ! defined( 'ABSPATH' ) ) {
+if (! defined('ABSPATH')) {
     exit;
 }
 
-function protip_register_post_type() {
+function protip_register_post_type()
+{
     $labels = array(
         'name'               => 'Pro-tips',
         'singular_name'      => 'Pro-tip',
@@ -30,21 +31,22 @@ function protip_register_post_type() {
         'show_ui'            => true,
         'show_in_menu'       => true,
         'query_var'          => true,
-        'rewrite'            => array( 'slug' => 'protip' ),
+        'rewrite'            => array('slug' => 'protip'),
         'capability_type'    => 'post',
         'has_archive'        => true,
         'hierarchical'       => false,
         'menu_position'      => 20,
         'menu_icon'          => 'dashicons-lightbulb',
-        'supports'           => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt' ),
+        'supports'           => array('title', 'editor', 'author', 'thumbnail', 'excerpt'),
         'show_in_rest'       => true,
     );
 
-    register_post_type( 'protip', $args );
+    register_post_type('protip', $args);
 }
-add_action( 'init', 'protip_register_post_type' );
+add_action('init', 'protip_register_post_type');
 
-function protip_register_taxonomy() {
+function protip_register_taxonomy()
+{
     $labels = array(
         'name'              => 'Topics',
         'singular_name'     => 'Topic',
@@ -65,19 +67,20 @@ function protip_register_taxonomy() {
         'show_ui'            => true,
         'show_admin_column'  => true,
         'query_var'          => true,
-        'rewrite'            => array( 'slug' => 'protip-topic' ),
+        'rewrite'            => array('slug' => 'protip-topic'),
         'show_in_rest'       => true,
     );
 
-    register_taxonomy( 'protip_topic', array( 'protip' ), $args );
+    register_taxonomy('protip_topic', array('protip'), $args);
 }
-add_action( 'init', 'protip_register_taxonomy' );
+add_action('init', 'protip_register_taxonomy');
 
-function protip_change_title_placeholder( $title, $post ) {
-    if ( 'protip' === $post->post_type ) {
+function protip_change_title_placeholder($title, $post)
+{
+    if ('protip' === $post->post_type) {
         return 'Enter pro-tip title';
     }
 
     return $title;
 }
-add_filter( 'enter_title_here', 'protip_change_title_placeholder', 10, 2 );
+add_filter('enter_title_here', 'protip_change_title_placeholder', 10, 2);

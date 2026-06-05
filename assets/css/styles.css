@@ -1,0 +1,63 @@
+.ptv-grid {
+  display: grid;
+  gap: 1rem;
+}
+.ptv-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.ptv-card__title {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+.ptv-card__excerpt {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+.ptv-card__button-container {
+  display: flex;
+  justify-content: center;
+}
+.ptv-card__button {
+  background-color: #06147e;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.ptv-card__button:hover {
+  background-color: #03093c;
+}
+/* Focus styles for keyboard navigation */
+.ptv-card__button:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 3px;
+}
+.ptv-empty {
+  font-size: 1.25rem;
+  text-align: center;
+  color: #555;
+}
+.ptv-card--featured .ptv-card__title {
+  font-weight: 700;
+}
+.ptv-card--featured {
+  background-color: #a9b3ff;
+  border: 1px solid #a9b3ff;
+}
+
+@media (min-width: 640px) {
+  .ptv-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 960px) {
+  .ptv-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

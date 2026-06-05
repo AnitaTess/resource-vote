@@ -6,18 +6,23 @@
  * Author: Anita Aksentowicz
  */
 
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if (! defined('ABSPATH')) {
+    exit;
+}
 
-class Protip_Creator_Voter {
+class Protip_Creator_Voter
+{
     const VERSION = '1.0.0';
 
-    public function __construct() {
-        register_activation_hook( __FILE__, [ $this, 'activate' ] );
-        register_deactivation_hook( __FILE__, [ $this, 'deactivate' ] );
+    public function __construct()
+    {
+        register_activation_hook(__FILE__, [$this, 'activate']);
+        register_deactivation_hook(__FILE__, [$this, 'deactivate']);
     }
 
     //create table on plugin activation
-    public function activate() {
+    public function activate()
+    {
         global $wpdb;
         $table_name = $wpdb->prefix . 'protip_votes';
         $charset_collate = $wpdb->get_charset_collate();
@@ -31,24 +36,37 @@ class Protip_Creator_Voter {
             KEY user_id (user_id)
         ) $charset_collate;";
 
-        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-        dbDelta( $sql );
+        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+        dbDelta($sql);
     }
 
     //deactivation hook
-    public function deactivate() {
-    //data left intact for future use
+    public function deactivate()
+    {
+        //data left intact for future use
     }
 
-    public static function uninstall() {
-    global $wpdb;
-    $table_name = $wpdb->prefix . 'protip_votes';
-    $wpdb->query( "DROP TABLE IF EXISTS {$table_name}" );
+    public static function uninstall()
+    {
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'protip_votes';
+        $wpdb->query("DROP TABLE IF EXISTS {$table_name}");
+    }
 }
+function protip_enqueue_assets()
+{
+    wp_enqueue_style(
+        'protip-votes',
+        plugin_dir_url(__FILE__) . 'assets/css/styles.css',
+        array(),
+        Protip_Creator_Voter::VERSION,
+        'all'
+    );
+}
+add_action('wp_enqueue_scripts', 'protip_enqueue_assets');
 
-}
-require_once plugin_dir_path( __FILE__ ) . 'protip_cpt.php';
-require_once plugin_dir_path( __FILE__ ) . 'protip_shortcode.php';
-register_uninstall_hook( __FILE__, [ 'Protip_Creator_Voter', 'uninstall' ] );
+require_once plugin_dir_path(__FILE__) . 'protip_cpt.php';
+require_once plugin_dir_path(__FILE__) . 'protip_shortcode.php';
+register_uninstall_hook(__FILE__, ['Protip_Creator_Voter', 'uninstall']);
 
 new Protip_Creator_Voter();
