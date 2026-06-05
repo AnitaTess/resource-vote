@@ -40,6 +40,14 @@ class Protip_Creator_Voter {
     //data left intact for future use
     }
 
+    public static function uninstall() {
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'protip_votes';
+    $wpdb->query( "DROP TABLE IF EXISTS {$table_name}" );
+}
+
 }
 require_once plugin_dir_path( __FILE__ ) . 'protip_cpt.php';
+register_uninstall_hook( __FILE__, [ 'Protip_Creator_Voter', 'uninstall' ] );
+
 new Protip_Creator_Voter();
