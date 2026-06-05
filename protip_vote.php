@@ -41,4 +41,5 @@ class Protip_Creator_Voter {
     }
 
 }
+require_once plugin_dir_path( __FILE__ ) . 'protip_cpt.php';
 new Protip_Creator_Voter();
