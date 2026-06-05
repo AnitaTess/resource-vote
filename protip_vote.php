@@ -48,6 +48,7 @@ class Protip_Creator_Voter {
 
 }
 require_once plugin_dir_path( __FILE__ ) . 'protip_cpt.php';
+require_once plugin_dir_path( __FILE__ ) . 'protip_shortcode.php';
 register_uninstall_hook( __FILE__, [ 'Protip_Creator_Voter', 'uninstall' ] );
 
 new Protip_Creator_Voter();
