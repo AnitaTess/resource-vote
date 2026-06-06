@@ -74,7 +74,7 @@ function protip_votes_shortcode($atts)
                 }
 
             ?>
-                <article class="<?php echo esc_attr($card_classes); ?>" aria-labelledby="<?php echo esc_attr($title_id); ?>">
+                <article class="<?php echo esc_attr($card_classes); ?>" data-protip-id="<?php echo esc_attr( get_the_ID() ); ?>" aria-labelledby="<?php echo esc_attr($title_id); ?>">
                     <h3 id="<?php echo esc_attr($title_id); ?>" class="ptv-card__title">
                         <?php echo esc_html(get_the_title()); ?>
                     </h3>
