@@ -182,7 +182,6 @@ add_action( 'wp_ajax_nopriv_protip_vote', 'protip_handle_vote_logged_out' );
 require_once plugin_dir_path(__FILE__) . 'protip_rest.php';
 require_once plugin_dir_path(__FILE__) . 'protip_cpt.php';
 require_once plugin_dir_path(__FILE__) . 'protip_shortcode.php';
-require_once plugin_dir_path( __FILE__ ) . 'protip_updater.php';
 
 register_uninstall_hook(__FILE__, ['Protip_Creator_Voter', 'uninstall']);
 
