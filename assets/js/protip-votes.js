@@ -62,7 +62,12 @@ async function submitVote(protipId) {
 }
 
 async function fetchLatestProtips() {
-  const response = await fetch(ProtipVotes.restUrl);
+  const response = await fetch(ProtipVotes.restUrl, {
+  method: 'GET',
+  headers: {
+    'X-WP-Nonce': ProtipVotes.restNonce,
+  },
+});
 
   const result = await response.json();
 
