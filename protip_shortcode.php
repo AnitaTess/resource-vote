@@ -82,7 +82,7 @@ function protip_votes_shortcode($atts)
                         <?php echo wp_kses_post(get_the_excerpt()); ?>
                     </div>
                      <p id="<?php echo esc_attr( $message_id ); ?>" class="ptv-card__message" aria-live="polite">
-                <?php esc_html_e( 'Voting coming soon.', 'protip-votes' ); ?>
+                <?php echo esc_html( 'Votes: ' . protip_get_vote_count( get_the_ID() ) ); ?>
             </p>
                     <div class="ptv-card__button-container">
                         <button
