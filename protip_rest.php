@@ -1,4 +1,5 @@
 <?php
+//Only run this file through WordPress. If someone accesses it directly, block it.
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
@@ -17,8 +18,10 @@ function protip_register_rest_routes() {
         )
     );
 }
+// Register custom REST API routes when WordPress initialises the REST API system.
 add_action( 'rest_api_init', 'protip_register_rest_routes' );
-
+//Get the requested limit from the REST API URL, clean it into a positive integer,
+//default it to 12 if it’s missing/invalid, and cap it at 18 so the endpoint can’t return too many posts at once.
 function protip_rest_get_protips( WP_REST_Request $request ) {
     $limit = absint( $request->get_param( 'limit' ) );
 
@@ -29,7 +32,7 @@ function protip_rest_get_protips( WP_REST_Request $request ) {
     if ( $limit > 18 ) {
         $limit = 18;
     }
-
+//Get the topic from the REST API URL, clean it into a safe taxonomy slug, and use it to filter Pro-tips by topic
     $topic = sanitize_title( $request->get_param( 'topic' ) );
 
     $args = array(
@@ -48,7 +51,7 @@ function protip_rest_get_protips( WP_REST_Request $request ) {
             ),
         );
     }
-
+//WP_Query for getting the pro-tips to return in the REST API response, using the same query arguments as the shortcode
     $query = new WP_Query( $args );
 
     $items = array();
@@ -64,14 +67,14 @@ function protip_rest_get_protips( WP_REST_Request $request ) {
             'vote_count' => protip_get_vote_count( get_the_ID() ),
         );
     }
-
+//when done with the custom query, ask WordPress to restore the original page/post context.
     wp_reset_postdata();
 
     return new WP_REST_Response(
         array(
             'items' => $items,
         ),
-        200
+        200 //request was successful
     );
 }
 

@@ -1,6 +1,5 @@
 <?php
-// Custom post type for pro-tips.
-
+//Only run this file through WordPress. If someone accesses it directly, block it.
 if (! defined('ABSPATH')) {
     exit;
 }
@@ -38,11 +37,12 @@ function protip_register_post_type()
         'menu_position'      => 20,
         'menu_icon'          => 'dashicons-lightbulb',
         'supports'           => array('title', 'editor', 'author', 'thumbnail', 'excerpt'),
-        'show_in_rest'       => true,
+        'show_in_rest'       => true, //protip CPT can be used in the block editor and accessed through REST API routes like WordPress’ built-in post types
     );
 
-    register_post_type('protip', $args);
+    register_post_type('protip', $args); //WordPress built-in method to register a new custom post type called protip, using the settings in $args
 }
+// init - When WordPress reaches its initialisation stage, run my protip_register_post_type() function.
 add_action('init', 'protip_register_post_type');
 
 function protip_register_taxonomy()
@@ -71,16 +71,21 @@ function protip_register_taxonomy()
         'show_in_rest'       => true,
     );
 
-    register_taxonomy('protip_topic', array('protip'), $args);
+    register_taxonomy('protip_topic', array('protip'), $args); //WordPress built-in function, here adds a custom Topics taxonomy for Pro-tip posts.
 }
+//using action hook because we want to run this function during WordPress initialization, which is when custom post types and taxonomies should be registered.
 add_action('init', 'protip_register_taxonomy');
 
+// Change the default title field placeholder when editing a Pro-tip.
+// The filter receives the current placeholder text and the current post object.
 function protip_change_title_placeholder($title, $post)
 {
+    // If the current post type is "protip", return a custom placeholder.
     if ('protip' === $post->post_type) {
         return 'Enter pro-tip title';
     }
-
+    // Otherwise, return the original placeholder unchanged.
     return $title;
 }
-add_filter('enter_title_here', 'protip_change_title_placeholder', 10, 2);
+// using filter hook because we want to modify the default behavior of WordPress.
+add_filter('enter_title_here', 'protip_change_title_placeholder', 10, 2); // Run this function at priority 10, and pass it 2 arguments

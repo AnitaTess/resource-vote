@@ -1,4 +1,5 @@
 <?php
+//Only run this file through WordPress. If someone accesses it directly, block it.
 if (! defined('ABSPATH')) {
     exit;
 }
@@ -46,12 +47,13 @@ function protip_votes_shortcode($atts)
             ),
         );
     }
-    //WP_Query
+    //WP_Query for getting the pro-tips loop to display in the shortcode
     $protip_query = new WP_Query($args);
 
     //because this is inside a shortcode function, wrappping the output with ob_start(); and ob_get_clean() 
     //to return the output as a string instead of echoing it directly
     ob_start();
+    //have_posts() is a built-in WordPress method used with a query object to check whether that query has posts to loop through.
     if ($protip_query->have_posts()) : ?>
         <!-- pagination here -->
          <button type="button" class="ptv-refresh">
@@ -68,22 +70,34 @@ function protip_votes_shortcode($atts)
 
                 $count++;
                 $card_classes = 'ptv-card';
-
+                //making first card the featured one by adding modifier class to it, and styling it differently in CSS
                 if (1 === $count) {
                     $card_classes .= ' ptv-card--featured';
                 }
 
             ?>
-                <article class="<?php echo esc_attr($card_classes); ?>" data-protip-id="<?php echo esc_attr( get_the_ID() ); ?>" aria-labelledby="<?php echo esc_attr($title_id); ?>">
+            <!-- CARD -->
+                <article class="<?php echo esc_attr($card_classes); 
+                    // Stores the current Pro-tip post ID on the card so JavaScript can match
+                    // this card with the vote count returned from AJAX/REST API responses.
+                     ?>" data-protip-id="<?php echo esc_attr( get_the_ID() ); 
+                    // Connects this article to its heading, so assistive technologies
+                    // can use the Pro-tip title as the accessible label for the card.
+                     ?>" aria-labelledby="<?php echo esc_attr($title_id); ?>">
+            <!-- TITLE -->
                     <h3 id="<?php echo esc_attr($title_id); ?>" class="ptv-card__title">
                         <?php echo esc_html(get_the_title()); ?>
                     </h3>
+            <!-- EXCERPT -->
                     <div class="ptv-card__excerpt">
                         <?php echo wp_kses_post(get_the_excerpt()); ?>
                     </div>
+                    <!-- aria-live="polite" - Announces the change when the screen reader has a natural pause. Good for non-urgent updates -->
+                     <!-- For urgent messages, like critical errors use aria-live="assertive" -->
                      <p id="<?php echo esc_attr( $message_id ); ?>" class="ptv-card__message" aria-live="polite">
                 <?php echo esc_html( 'Votes: ' . protip_get_vote_count( get_the_ID() ) ); ?>
-            </p>
+                    </p>
+            <!-- BUTTON CONTAINER -->
                     <div class="ptv-card__button-container">
                         <button
                             type="button"
@@ -100,7 +114,9 @@ function protip_votes_shortcode($atts)
         </div>
 
     <?php else : ?>
-        <p class="ptv-empty"><?php esc_html_e('Sorry, no pro-tips found.', 'protip-votes'); ?></p>
+        <p class="ptv-empty"><?php 
+            //esc_html only returns, while esc_html_e prints staight away
+            esc_html_e('Sorry, no pro-tips found.', 'protip-votes'); ?></p>
     <?php endif; ?>
 <?php
     //use wp_reset_postdata() after a custom query so the global post object goes back to the main query
@@ -108,5 +124,6 @@ function protip_votes_shortcode($atts)
 
     return ob_get_clean();
 }
-
+//the first argument is the shortcode name, the second argument is the callback function that generates the shortcode output
+//usage example: [protip_votes limit="3" topic="css"]
 add_shortcode('protip_votes', 'protip_votes_shortcode');
