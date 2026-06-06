@@ -73,13 +73,14 @@ function protip_enqueue_assets() {
 
     //use wp_localize_script() to safely pass the AJAX URL and nonce from PHP to JavaScript 
     wp_localize_script(
-        'protip-votes',
-        'ProtipVotes',
-        array(
-            'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-            'nonce'   => wp_create_nonce( 'protip_vote_nonce' ),
-        )
-    );
+    'protip-votes',
+    'ProtipVotes',
+    array(
+        'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+        'nonce'   => wp_create_nonce( 'protip_vote_nonce' ),
+        'restUrl' => esc_url_raw( rest_url( 'protip-votes/v1/protips' ) ),
+    )
+);
 }
 add_action( 'wp_enqueue_scripts', 'protip_enqueue_assets' );
 
@@ -163,8 +164,19 @@ wp_send_json_success(
 }
 add_action( 'wp_ajax_protip_vote', 'protip_handle_vote' );
 
+function protip_handle_vote_logged_out() {
+    wp_send_json_error(
+        array(
+            'message' => 'You must be logged in to vote.',
+        ),
+        403
+    );
+}
+add_action( 'wp_ajax_nopriv_protip_vote', 'protip_handle_vote_logged_out' );
+
 require_once plugin_dir_path(__FILE__) . 'protip_cpt.php';
 require_once plugin_dir_path(__FILE__) . 'protip_shortcode.php';
+require_once plugin_dir_path(__FILE__) . 'protip_rest.php';
 register_uninstall_hook(__FILE__, ['Protip_Creator_Voter', 'uninstall']);
 
 new Protip_Creator_Voter();

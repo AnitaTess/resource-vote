@@ -54,6 +54,9 @@ function protip_votes_shortcode($atts)
     ob_start();
     if ($protip_query->have_posts()) : ?>
         <!-- pagination here -->
+         <button type="button" class="ptv-refresh">
+    <?php esc_html_e( 'Check latest vote counts', 'protip-votes' ); ?>
+</button>
         <div class="ptv-grid">
             <!-- the loop -->
             <?php

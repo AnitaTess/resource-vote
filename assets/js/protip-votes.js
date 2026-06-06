@@ -5,6 +5,12 @@ document.addEventListener('DOMContentLoaded', () => {
   voteButtons.forEach((button) => {
     button.addEventListener('click', handleVoteClick);
   });
+
+  const refreshButton = document.querySelector('.ptv-refresh');
+
+    if (refreshButton) {
+    refreshButton.addEventListener('click', handleRefreshClick);
+    }
 });
 
 function setButtonLoading(button, isLoading) {
@@ -53,6 +59,28 @@ async function submitVote(protipId) {
   }
 
   return result;
+}
+
+async function fetchLatestProtips() {
+  const response = await fetch(ProtipVotes.restUrl);
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error('Could not load latest pro-tips.');
+  }
+
+  return result;
+}
+
+async function handleRefreshClick() {
+  try {
+    const result = await fetchLatestProtips();
+
+    console.log('Latest pro-tips from REST API:', result);
+  } catch (error) {
+    console.error(error.message);
+  }
 }
 
 

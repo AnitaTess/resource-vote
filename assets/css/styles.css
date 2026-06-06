@@ -60,7 +60,23 @@
   margin: 0 0 0.75rem;
   font-size: 0.95rem;
 }
-
+.ptv-refresh {
+  background-color: #fff;
+  color: #06147e;
+  border: 2px solid #06147e;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+.ptv-refresh:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 3px;
+}
+.ptv-refresh:hover {
+  background-color: #06147e;
+  color: #fff;
+}
 @media (min-width: 640px) {
   .ptv-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
