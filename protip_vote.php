@@ -10,10 +10,6 @@ if (! defined('ABSPATH')) {
     exit;
 }
 
-define( 'PROTIP_VOTES_PLUGIN_FILE', __FILE__ );
-define( 'PROTIP_VOTES_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
-define( 'PROTIP_VOTES_UPDATE_JSON_URL', 'https://raw.githubusercontent.com/AnitaTess/resource-vote/main/plugin-update.json' );
-
 class Protip_Creator_Voter
 {
     const VERSION = '1.0.0';
