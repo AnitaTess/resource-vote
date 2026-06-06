@@ -11,7 +11,9 @@ function protip_register_rest_routes() {
         array(
             'methods'             => 'GET',
             'callback'            => 'protip_rest_get_protips',
-            'permission_callback' => '__return_true',
+            'permission_callback' => function () {
+    return is_user_logged_in();
+},
         )
     );
 }

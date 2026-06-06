@@ -83,6 +83,7 @@ function protip_enqueue_assets() {
         'ajaxUrl' => admin_url( 'admin-ajax.php' ),
         'nonce'   => wp_create_nonce( 'protip_vote_nonce' ),
         'restUrl' => esc_url_raw( rest_url( 'protip-votes/v1/protips' ) ),
+        'restNonce' => wp_create_nonce( 'wp_rest' ),
     )
 );
 }
