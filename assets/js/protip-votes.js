@@ -79,13 +79,57 @@ async function fetchLatestProtips() {
 }
 
 async function handleRefreshClick() {
+  const refreshButton = document.querySelector('.ptv-refresh');
+
+  if (refreshButton) {
+    refreshButton.disabled = true;
+    refreshButton.textContent = 'Checking...';
+  }
+
   try {
     const result = await fetchLatestProtips();
 
-    console.log('Latest pro-tips from REST API:', result);
+    updateVoteCounts(result.items);
+
+    if (refreshButton) {
+      refreshButton.textContent = 'Vote counts updated';
+    }
   } catch (error) {
     console.error(error.message);
+
+    if (refreshButton) {
+      refreshButton.textContent = 'Could not update votes';
+    }
+  } finally {
+    setTimeout(() => {
+      if (refreshButton) {
+        refreshButton.disabled = false;
+        refreshButton.textContent = 'Check latest vote counts';
+      }
+    }, 1500);
   }
+}
+
+function updateVoteCounts(items) {
+  if (!Array.isArray(items)) {
+    return;
+  }
+
+  items.forEach((item) => {
+    const card = document.querySelector(`.ptv-card[data-protip-id="${item.id}"]`);
+
+    if (!card) {
+      return;
+    }
+
+    const message = card.querySelector('.ptv-card__message');
+
+    if (!message) {
+      return;
+    }
+
+    message.textContent = `Votes: ${item.vote_count}`;
+  });
 }
 
 
