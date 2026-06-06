@@ -49,6 +49,17 @@
   background-color: #a9b3ff;
   border: 1px solid #a9b3ff;
 }
+.ptv-card--voted {
+  border-color: #06147e;
+}
+.ptv-card--voted .ptv-card__button {
+  opacity: 0.75;
+  cursor: not-allowed;
+}
+.ptv-card__message {
+  margin: 0 0 0.75rem;
+  font-size: 0.95rem;
+}
 
 @media (min-width: 640px) {
   .ptv-grid {

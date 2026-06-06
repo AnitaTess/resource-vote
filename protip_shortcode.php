@@ -61,6 +61,7 @@ function protip_votes_shortcode($atts)
             while ($protip_query->have_posts()) :
                 $protip_query->the_post();
                 $title_id = 'ptv-card-title-' . get_the_ID();
+                $message_id = 'ptv-card-message-' . get_the_ID();
 
                 $count++;
                 $card_classes = 'ptv-card';
@@ -77,12 +78,17 @@ function protip_votes_shortcode($atts)
                     <div class="ptv-card__excerpt">
                         <?php echo wp_kses_post(get_the_excerpt()); ?>
                     </div>
+                     <p id="<?php echo esc_attr( $message_id ); ?>" class="ptv-card__message" aria-live="polite">
+                <?php esc_html_e( 'Voting coming soon.', 'protip-votes' ); ?>
+            </p>
                     <div class="ptv-card__button-container">
                         <button
                             type="button"
                             class="ptv-card__button"
-                            data-protip-id="<?php echo esc_attr(get_the_ID()); ?>">
-                            <?php esc_html_e('Coming Soon!', 'protip-votes'); ?>
+                            data-protip-id="<?php echo esc_attr(get_the_ID()); ?>"
+                            aria-describedby="<?php echo esc_attr($message_id); ?>">
+                            
+                            <?php esc_html_e('Vote for this tip', 'protip-votes'); ?>
                         </button>
                     </div>
                 </article>
